@@ -85,9 +85,14 @@
                                 >
                                     {{ item.author.username }}
                                 </nuxt-link>
-                                <span class="date">{{ item.author.createdAt }}</span>
+                                <span class="date">{{ item.createdAt }}</span>
                             </div>
-                            <button class="btn btn-outline-primary btn-sm pull-xs-right" :class="{ active: item.favorited }">
+                            <button
+                                :disabled="item.favoriteDisabled"
+                                @click="favorited($event, item)"
+                                class="btn btn-outline-primary btn-sm pull-xs-right"
+                                :class="{ active: item.favorited }"
+                            >
                                 <i class="ion-heart"></i>
                                 {{ item.favoritesCount }}
                             </button>
@@ -150,7 +155,7 @@
 </template>
 
 <script>
-import { getTags, getArticlesList, articlesFeed } from '../../network/api';
+import { getTags, getArticlesList, articlesFeed, favoriteArticle, unfavoriteArticle } from '../../network/api';
 import { mapState } from 'vuex';
 import axios from 'axios';
 export default {
@@ -172,7 +177,9 @@ export default {
         }
         const getArticles = tab === 'Your_Feed' ? articlesFeed : getArticlesList;
         const [{ articles, articlesCount }, { tags }] = await Promise.all([getArticles(params), getTags()]);
-        return { articles, articlesCount, tags, pageLimit, pageOffset, page, tab, tag: tag };
+        // 设置点赞按钮是否禁用
+        articles.forEach(item => (item.favoriteDisabled = false));
+        return { articles, articlesCount, tags, pageLimit, pageOffset, tab, tag };
     },
     data() {
         return {};
@@ -194,6 +201,15 @@ export default {
         },
         sizeChange(size) {
             this.pageLimit = size;
+        },
+        favorited($event, article) {
+            article.favoriteDisabled = true;
+            const submit = article.favorited ? unfavoriteArticle : favoriteArticle;
+            submit({ slug: article.slug }).then(res => {
+                console.log(res);
+                article.favoriteDisabled = false;
+            });
+            console.log(article);
         }
     }
 };

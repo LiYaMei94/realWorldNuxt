@@ -209,10 +209,10 @@ export function deleteComment(options) {
  * @param {*} options 
  */
 export function favoriteArticle(options) {
+    console.log(options)
     return request({
-        url: '/api/articles/:slug/favorite',
+        url: `/api/articles/${options.slug}/favorite`,
         method: 'POST',
-        options
     });
 }
 
@@ -221,10 +221,10 @@ export function favoriteArticle(options) {
  * @param {*} options 
  */
 export function unfavoriteArticle(options) {
+    console.log(options)
     return request({
-        url: '/api/articles/:slug/favorite',
+        url: `/api/articles/${options.slug}/favorite`,
         method: 'DELETE',
-        options
     });
 }
 
