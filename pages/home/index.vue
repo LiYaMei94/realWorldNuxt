@@ -101,7 +101,7 @@
                             class="preview-link"
                             :to="{
                                 name: 'article',
-                                params: {
+                                query: {
                                     slug: item.slug
                                 }
                             }"

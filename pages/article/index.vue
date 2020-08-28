@@ -2,15 +2,25 @@
     <div class="article-page">
         <div class="banner">
             <div class="container">
-                <h1>How to build webapps that scale</h1>
+                <h1>{{ article.title }}</h1>
 
                 <div class="article-meta">
-                    <a href=""><img src="../../static/images/5b201b8dc08efa5ba5ede60e0cf1db1.jpg" /></a>
+                    <nuxt-link
+                        :to="{
+                            name: 'profile',
+                            params: {
+                                username: article.author.username
+                            }
+                        }"
+                    >
+                        <img :src="article.author.image" />
+                    </nuxt-link>
                     <div class="info">
-                        <a href="" class="author">Eric Simons</a>
-                        <span class="date">January 20th</span>
+                        <a href="" class="author">{{ article.author.username }}</a>
+                        <!-- <span class="date">January 20th</span> -->
+                        <span class="date">{{ article.createdAt | date('MMM DD, YYYY') }}</span>
                     </div>
-                    <button class="btn btn-sm btn-outline-secondary">
+                    <!-- <button class="btn btn-sm btn-outline-secondary">
                         <i class="ion-plus-round"></i>
                         &nbsp; Follow Eric Simons
                         <span class="counter">(10)</span>
@@ -20,7 +30,7 @@
                         <i class="ion-heart"></i>
                         &nbsp; Favorite Post
                         <span class="counter">(29)</span>
-                    </button>
+                    </button> -->
                 </div>
             </div>
         </div>
@@ -29,18 +39,17 @@
             <div class="row article-content">
                 <div class="col-md-12">
                     <p>
-                        Web development technologies have evolved at an incredible clip over the past few years.
+                        {{ article.description }}
                     </p>
                     <h2 id="introducing-ionic">Introducing RealWorld.</h2>
-                    <p>It's a great solution for learning how other frameworks work.</p>
+                    <p>{{ article.body }}</p>
                 </div>
             </div>
 
             <hr />
 
-            <div class="article-actions">
+            <!-- <div class="article-actions">
                 <div class="article-meta">
-                    <!-- <nuxt-link to=''><img src="../../static/images/5b201b8dc08efa5ba5ede60e0cf1db1.jpg" /></nuxt-link> -->
                     <a href="profile.html"><img src="../../static/images/5b201b8dc08efa5ba5ede60e0cf1db1.jpg" /></a>
                     <div class="info">
                         <a href="" class="author">Eric Simons</a>
@@ -59,9 +68,9 @@
                         <span class="counter">(29)</span>
                     </button>
                 </div>
-            </div>
+            </div> -->
 
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-xs-12 col-md-8 offset-md-2">
                     <form class="card comment-form">
                         <div class="card-block">
@@ -107,15 +116,23 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </template>
 
 <script>
+import { articleDetail } from '../../network/api';
 export default {
     middleware: 'authenticated',
-    name: 'ArticleIndex'
+    name: 'ArticleIndex',
+    async asyncData({ query }) {
+        const { article } = await articleDetail({ slug: query.slug });
+        return {
+            article
+        };
+        console.log(article);
+    }
 };
 </script>
 

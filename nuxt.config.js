@@ -42,7 +42,7 @@ export default {
                         },
                         {
                             name: 'article',
-                            path: '/article/:slug',
+                            path: '/article/',
                             component: resolve(__dirname, '@/pages/article/'),
                         },
                         {

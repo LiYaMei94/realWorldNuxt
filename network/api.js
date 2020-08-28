@@ -121,7 +121,7 @@ export function articlesFeed(options) {
  */
 export function articleDetail(options) {
     return request({
-        url: '/api/articles/:slug',
+        url: `/api/articles/${options.slug}`,
         method: 'GET',
         options
     });
