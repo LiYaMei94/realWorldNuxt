@@ -1,4 +1,4 @@
-import request from "./request";
+import { request } from "../plugins/request";
 
 
 /**
@@ -104,7 +104,7 @@ export function getArticlesList(options) {
 
 
 /**
- * 
+ * 用户喜欢的文章列表
  * @param {*} options 
  */
 export function articlesFeed(options) {

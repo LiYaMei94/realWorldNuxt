@@ -43,10 +43,10 @@
                                     Global Feed
                                 </nuxt-link>
                             </li>
-                            <li class="nav-item" v-if="tab === 'tab'">
+                            <li class="nav-item" v-if="tab === 'tag'">
                                 <nuxt-link
                                     class="nav-link"
-                                    :class="{ active: tab === 'tab' }"
+                                    :class="{ active: tab === 'tag' }"
                                     exact
                                     :to="{
                                         name: 'home',
@@ -135,7 +135,7 @@
                                     name: 'home',
                                     query: {
                                         tag: item,
-                                        tab: 'tab'
+                                        tab: 'tag'
                                     }
                                 }"
                             >
@@ -150,7 +150,7 @@
 </template>
 
 <script>
-import { getTags, getArticlesList } from '../../network/api';
+import { getTags, getArticlesList, articlesFeed } from '../../network/api';
 import { mapState } from 'vuex';
 import axios from 'axios';
 export default {
@@ -170,7 +170,8 @@ export default {
         if (tag !== '') {
             params.tag = tag;
         }
-        const [{ articles, articlesCount }, { tags }] = await Promise.all([getArticlesList(params), getTags()]);
+        const getArticles = tab === 'Your_Feed' ? articlesFeed : getArticlesList;
+        const [{ articles, articlesCount }, { tags }] = await Promise.all([getArticles(params), getTags()]);
         return { articles, articlesCount, tags, pageLimit, pageOffset, page, tab, tag: tag };
     },
     data() {
@@ -183,7 +184,8 @@ export default {
     methods: {
         pageChange(page) {
             const query = {
-                page: page
+                page: page,
+                tab: this.tab
             };
             if (this.tag !== '') {
                 query.tag = this.tag;

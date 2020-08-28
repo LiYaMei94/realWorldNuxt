@@ -1,7 +1,4 @@
 export default {
-    mode: 'universal',
-    target: 'server',
-    components: true,
     router: {
         linkActiveClass: 'active',// 将nuxt-link-active替换为active
         extendRoutes(routes, resolve) {
@@ -79,6 +76,7 @@ export default {
     // },
     plugins: [
         '~/plugins/inits/element-ui.init.js',
+        '~/plugins/request.js'
     ]
 
 }
