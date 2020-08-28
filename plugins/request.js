@@ -5,6 +5,7 @@ const Axios = axios.create({
     baseURL: 'http://realworld.api.fed.lagounews.com'
 })
 
+// 插件的导出必须使用默认导出
 export default ({ store }) => {
     // 请求拦截器
     Axios.interceptors.request.use((config) => {

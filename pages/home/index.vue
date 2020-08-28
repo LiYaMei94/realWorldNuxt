@@ -85,7 +85,7 @@
                                 >
                                     {{ item.author.username }}
                                 </nuxt-link>
-                                <span class="date">{{ item.createdAt }}</span>
+                                <span class="date">{{ item.createdAt | date('MMM DD, YYYY') }}</span>
                             </div>
                             <button
                                 :disabled="item.favoriteDisabled"

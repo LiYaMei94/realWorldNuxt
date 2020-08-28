@@ -76,7 +76,8 @@ export default {
     // },
     plugins: [
         '~/plugins/inits/element-ui.init.js',
-        '~/plugins/request.js'
+        '~/plugins/request.js',
+        '~/plugins/dayjs.js'
     ]
 
 }
