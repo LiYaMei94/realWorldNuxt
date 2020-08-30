@@ -1,9 +1,8 @@
-import { request } from "../plugins/request";
-
+import { request } from '../plugins/request';
 
 /**
  * 登录
- * @param {*} options 
+ * @param {*} options
  */
 export function login(options) {
     return request({
@@ -15,83 +14,77 @@ export function login(options) {
 
 /**
  * 注册
- * @param {*} options 
+ * @param {*} options
  */
 export function register(options) {
     return request({
         url: '/api/users',
         method: 'POST',
         options
-    })
+    });
 }
 
 /**
  * 获取当前用户
- * @param {*} options 
+ * @param {*} options
  */
 export function getUser(options) {
     return request({
         url: '/api/users',
         method: 'GET',
         options
-    })
+    });
 }
 
 /**
  * 修改当前用户信息
- * @param {*} options 
+ * @param {*} options
  */
 export function updateUser(options) {
     return request({
         url: '/api/users',
         method: 'PUT',
         options
-    })
+    });
 }
-
 
 /**
  * 获取用户简介信息
- * @param {*} options 
+ * @param {*} options
  */
 export function getProfiles(options) {
     return request({
-        url: '/api/profiles/:username',
+        url: `/api/profiles/${options.username}`,
         method: 'GET',
         options
-    })
+    });
 }
 
-
 /**
- * 
- * @param {*} options 
+ * 关注作者
+ * @param {*} options
  */
 export function followUser(options) {
     return request({
-        url: '/api/profiles/:username/follow',
-        method: 'POST',
-        options
-    })
+        url: `/api/profiles/${options.username}/follow`,
+        method: 'POST'
+    });
 }
 
-
 /**
- * 
- * @param {*} options 
+ * 取消关注
+ * @param {*} options
  */
 export function unfollowUser(options) {
     return request({
-        url: '/api/profiles/:username/follow',
-        method: 'DELETE',
-        options
-    })
+        url: `/api/profiles/${options.username}/follow`,
+        method: 'DELETE'
+    });
 }
-
 
 /**
  * 文章列表
- * @param {*} options 
+ * @param {*} options
  */
 export function getArticlesList(options) {
     // console.log(options)
@@ -102,10 +95,9 @@ export function getArticlesList(options) {
     });
 }
 
-
 /**
  * 用户喜欢的文章列表
- * @param {*} options 
+ * @param {*} options
  */
 export function articlesFeed(options) {
     return request({
@@ -117,7 +109,7 @@ export function articlesFeed(options) {
 
 /**
  * 文章详情
- * @param {*} options 
+ * @param {*} options
  */
 export function articleDetail(options) {
     return request({
@@ -127,10 +119,9 @@ export function articleDetail(options) {
     });
 }
 
-
 /**
  * 创建文章
- * @param {*} options 
+ * @param {*} options
  */
 export function createArticle(options) {
     return request({
@@ -140,61 +131,61 @@ export function createArticle(options) {
     });
 }
 
-
 /**
  * 修改文章
- * @param {*} options 
+ * @param {*} options
  */
 export function updateArticle(options) {
     return request({
-        url: '/api/articles/:slug',
+        url: `/api/articles/${options.slug}`,
         method: 'PUT',
-        options
+        options: {
+            article: options.article
+        }
     });
 }
 
-
 /**
  * 删除文章
- * @param {*} options 
+ * @param {*} options
  */
 export function deleteArticle(options) {
     return request({
-        url: '/api/articles/:slug',
-        method: 'DELETE',
-        options
+        url: `/api/articles/${options.slug}`,
+        method: 'DELETE'
     });
 }
 
 /**
  * 添加评论
- * @param {*} options 
+ * @param {*} options
  */
 export function addComments(options) {
     return request({
-        url: '/api/articles/:slug/comments',
+        url: `/api/articles/${options.slug}/comments`,
         method: 'POST',
-        options
+        options: {
+            comment: {
+                body: options.body
+            }
+        }
     });
 }
-
 
 /**
  * 获取一个文章的评论
- * @param {*} options 
+ * @param {*} options
  */
 export function getComments(options) {
     return request({
-        url: '/api/articles/:slug/comments',
-        method: 'GET',
-        options
+        url: `/api/articles/${options.slug}/comments`,
+        method: 'GET'
     });
 }
 
-
 /**
  * 删除评论
- * @param {*} options 
+ * @param {*} options
  */
 export function deleteComment(options) {
     return request({
@@ -206,33 +197,29 @@ export function deleteComment(options) {
 
 /**
  * 点赞
- * @param {*} options 
+ * @param {*} options
  */
 export function favoriteArticle(options) {
-    console.log(options)
     return request({
         url: `/api/articles/${options.slug}/favorite`,
-        method: 'POST',
+        method: 'POST'
     });
 }
 
 /**
  * 取消点赞
- * @param {*} options 
+ * @param {*} options
  */
 export function unfavoriteArticle(options) {
-    console.log(options)
     return request({
         url: `/api/articles/${options.slug}/favorite`,
-        method: 'DELETE',
+        method: 'DELETE'
     });
 }
 
-
-
 /**
  * 获取标签
- * @param {*} options 
+ * @param {*} options
  */
 export function getTags(options) {
     return request({

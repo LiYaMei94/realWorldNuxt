@@ -11,7 +11,7 @@
 
                     <template v-if="auth">
                         <li class="nav-item">
-                            <nuxt-link class="nav-link" to="/create">
+                            <nuxt-link class="nav-link" :class="{ active: $route.query.slug && $route.name === 'editor' }" to="/create">
                                 <i class="ion-compose"></i>
                                 &nbsp;New Article
                             </nuxt-link>
@@ -33,7 +33,7 @@
                                 }"
                             >
                                 <img v-show="auth.image" class="user-pic" :src="`/profile/${auth.image}`" />
-                                qian@163.com
+                                {{ auth.username }}
                             </nuxt-link>
                         </li>
                     </template>

@@ -61,7 +61,7 @@
                         </ul>
                     </div>
                     <!-- 文章列表 -->
-                    <div class="article-preview" v-for="item in articles" :key="item.slug">
+                    <div class="article-preview" v-for="(item, index) in articles" :key="item.slug">
                         <div class="article-meta">
                             <nuxt-link
                                 :to="{
@@ -89,7 +89,7 @@
                             </div>
                             <button
                                 :disabled="item.favoriteDisabled"
-                                @click="favorited($event, item)"
+                                @click="favorited($event, item, index)"
                                 class="btn btn-outline-primary btn-sm pull-xs-right"
                                 :class="{ active: item.favorited }"
                             >
@@ -202,14 +202,14 @@ export default {
         sizeChange(size) {
             this.pageLimit = size;
         },
-        favorited($event, article) {
+        favorited($event, article, index) {
             article.favoriteDisabled = true;
             const submit = article.favorited ? unfavoriteArticle : favoriteArticle;
             submit({ slug: article.slug }).then(res => {
-                console.log(res);
+                // console.log(res);
+                this.$set(this.articles, index, res.article);
                 article.favoriteDisabled = false;
             });
-            console.log(article);
         }
     }
 };

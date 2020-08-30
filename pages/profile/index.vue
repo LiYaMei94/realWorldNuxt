@@ -4,14 +4,16 @@
             <div class="container">
                 <div class="row">
                     <div class="col-xs-12 col-md-10 offset-md-1">
-                        <img src="../../static/images/5b201b8dc08efa5ba5ede60e0cf1db1.jpg" class="user-img" />
-                        <h4>Eric Simons</h4>
-                        <p>
-                            Cofounder @GoThinkster, lived in Aol's HQ for a few months, kinda looks like Peeta from the Hunger Games
-                        </p>
-                        <button class="btn btn-sm btn-outline-secondary action-btn">
+                        <img :src="profile.image" class="user-img" />
+                        <h4>{{ profile.username }}</h4>
+                        <p>{{ profile.bio }}</p>
+                        <button
+                            v-if="auth && profile.username !== auth.username"
+                            @click="submitFollowUser"
+                            class="btn btn-sm btn-outline-secondary action-btn"
+                        >
                             <i class="ion-plus-round"></i>
-                            &nbsp; Follow Eric Simons
+                            &nbsp; {{ profile.following ? 'Unfollow' : 'Follow' }} {{ profile.username }}
                         </button>
                     </div>
                 </div>
@@ -80,9 +82,30 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+import { getProfiles, unfollowUser, followUser } from '../../network/api';
 export default {
     middleware: 'authenticated',
-    name: 'ProfilePage'
+    name: 'ProfilePage',
+    async asyncData({ params }) {
+        const { profile } = await getProfiles({ username: params.username });
+        return {
+            profile
+        };
+    },
+    computed: {
+        ...mapState(['auth'])
+    },
+    methods: {
+        submitFollowUser() {
+            const submit = this.profile.following ? unfollowUser : followUser;
+            submit({ username: this.$route.params.username }).then(res => {
+                this.profile = res.profile;
+                // this.$emit('updateArticleDetail', { type: 'following', data: res.profile });
+                // console.log(res);
+            });
+        }
+    }
 };
 </script>
 
