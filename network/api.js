@@ -28,13 +28,13 @@ export function register(options) {
  * 获取当前用户
  * @param {*} options
  */
-export function getUser(options) {
-    return request({
-        url: '/api/users',
-        method: 'GET',
-        options
-    });
-}
+// export function getUser(options) {
+//     return request({
+//         url: '/api/users',
+//         method: 'GET',
+//         options
+//     });
+// }
 
 /**
  * 修改当前用户信息
@@ -61,7 +61,7 @@ export function getProfiles(options) {
 }
 
 /**
- * 关注作者
+ * 关注
  * @param {*} options
  */
 export function followUser(options) {
@@ -96,7 +96,7 @@ export function getArticlesList(options) {
 }
 
 /**
- * 用户喜欢的文章列表
+ * 用户关注的文章
  * @param {*} options
  */
 export function articlesFeed(options) {
@@ -189,9 +189,8 @@ export function getComments(options) {
  */
 export function deleteComment(options) {
     return request({
-        url: '/api/articles/:slug/comments/:id',
+        url: `/api/articles/${options.slug}/comments/${options.id}`,
         method: 'DELETE',
-        options
     });
 }
 

@@ -61,16 +61,16 @@ export default {
     },
     methods: {
         async getDetail() {
-            const query = this.$route.query;
-            const { article } = query.slug ? await articleDetail({ slug: query.slug }) : await {};
+            const params = this.$route.params;
+            const { article } = params.slug ? await articleDetail({ slug: params.slug }) : await {};
             this.articleForm = article ? article : {};
             this.tagList = article ? article.tagList : [];
             // console.log(article);
         },
 
         submit() {
-            const api = this.$route.query.slug
-                ? updateArticle({ slug: this.$route.query.slug, article: { ...this.articleForm, tagList: this.tagList } })
+            const api = this.$route.params.slug
+                ? updateArticle({ slug: this.$route.params.slug, article: { ...this.articleForm, tagList: this.tagList } })
                 : createArticle({ article: { ...this.articleForm, tagList: this.tagList } });
             api.then(res => {
                 // console.log(res);

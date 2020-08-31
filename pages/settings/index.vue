@@ -74,8 +74,8 @@ export default {
         ...mapMutations(['setAuth']),
         updateSettings() {
             updateUser({ user: this.userInfo }).then(res => {
-                // console.log(res);
                 this.setAuth(res.user);
+                Cookie.set('auth', res.user); // 服务端使用
                 this.$router.push(`/profile/${this.userInfo.username}`);
             });
         },

@@ -26,7 +26,6 @@
                                 >
                                     Your Feed
                                 </nuxt-link>
-                                <!-- <a :class="{ 'nav-link': true, disabled: auth }" href="">Your Feed</a> -->
                             </li>
                             <li class="nav-item">
                                 <nuxt-link
@@ -60,71 +59,15 @@
                             </li>
                         </ul>
                     </div>
-                    <!-- 文章列表 -->
-                    <div class="article-preview" v-for="(item, index) in articles" :key="item.slug">
-                        <div class="article-meta">
-                            <nuxt-link
-                                :to="{
-                                    name: 'profile',
-                                    params: {
-                                        username: item.author.username
-                                    }
-                                }"
-                            >
-                                <img :src="item.author.image" />
-                            </nuxt-link>
-                            <div class="info">
-                                <nuxt-link
-                                    class="author"
-                                    :to="{
-                                        name: 'profile',
-                                        params: {
-                                            username: item.author.username
-                                        }
-                                    }"
-                                >
-                                    {{ item.author.username }}
-                                </nuxt-link>
-                                <span class="date">{{ item.createdAt | date('MMM DD, YYYY') }}</span>
-                            </div>
-                            <button
-                                :disabled="item.favoriteDisabled"
-                                @click="favorited($event, item, index)"
-                                class="btn btn-outline-primary btn-sm pull-xs-right"
-                                :class="{ active: item.favorited }"
-                            >
-                                <i class="ion-heart"></i>
-                                {{ item.favoritesCount }}
-                            </button>
-                        </div>
-                        <nuxt-link
-                            class="preview-link"
-                            :to="{
-                                name: 'article',
-                                query: {
-                                    slug: item.slug
-                                }
-                            }"
-                        >
-                            <h1>{{ item.title }}</h1>
-                            <p>{{ item.description }}</p>
-                            <span>Read more...</span>
-                        </nuxt-link>
-                    </div>
-
-                    <!-- 分页 -->
-                    <el-pagination
-                        background
-                        v-if="articlesCount > pageLimit"
-                        layout="sizes,prev, pager, next"
-                        :total="articlesCount"
-                        :page-sizes="[10, 20, 30, 40]"
-                        :page-size="pageLimit"
-                        @prev-click="pageChange"
-                        @next-click="pageChange"
-                        @current-change="pageChange"
-                        @size-change="sizeChange"
-                    ></el-pagination>
+                    <ArticlePreview
+                        @favorited="favorited"
+                        :articles="articles"
+                        :articlesCount="articlesCount"
+                        :pageLimit="pageLimit"
+                        :tag="tag"
+                        :tab="tab"
+                        :page="page"
+                    ></ArticlePreview>
                 </div>
 
                 <div class="col-md-3">
@@ -158,13 +101,17 @@
 import { getTags, getArticlesList, articlesFeed, favoriteArticle, unfavoriteArticle } from '../../network/api';
 import { mapState } from 'vuex';
 import axios from 'axios';
+import ArticlePreview from '../../components/articlePreview';
 export default {
     name: 'HomeIndex',
+    components: {
+        ArticlePreview
+    },
     // 使用watchQuery属性可以监听参数字符串的更改。 如果定义的字符串发生变化，将调用所有组件方法(asyncData, fetch, validate, layout, ...)
     watchQuery: ['page', 'tag', 'tab', 'pageLimit'],
     async asyncData({ query }) {
         let page = Number.parseInt(query.page || 1);
-        let pageLimit = 20;
+        let pageLimit = 10;
         let pageOffset = (page - 1) * pageLimit;
         const tab = query.tab || 'Global_Feed';
         const tag = query.tag || '';
@@ -179,7 +126,7 @@ export default {
         const [{ articles, articlesCount }, { tags }] = await Promise.all([getArticles(params), getTags()]);
         // 设置点赞按钮是否禁用
         articles.forEach(item => (item.favoriteDisabled = false));
-        return { articles, articlesCount, tags, pageLimit, pageOffset, tab, tag };
+        return { articles, articlesCount, tags, pageLimit, pageOffset, tab, tag, page };
     },
     data() {
         return {};
@@ -189,27 +136,8 @@ export default {
     },
     mounted() {},
     methods: {
-        pageChange(page) {
-            const query = {
-                page: page,
-                tab: this.tab
-            };
-            if (this.tag !== '') {
-                query.tag = this.tag;
-            }
-            this.$router.push({ name: 'home', query: query });
-        },
-        sizeChange(size) {
-            this.pageLimit = size;
-        },
-        favorited($event, article, index) {
-            article.favoriteDisabled = true;
-            const submit = article.favorited ? unfavoriteArticle : favoriteArticle;
-            submit({ slug: article.slug }).then(res => {
-                // console.log(res);
-                this.$set(this.articles, index, res.article);
-                article.favoriteDisabled = false;
-            });
+        favorited({ article, index }) {
+            this.$set(this.articles, index, article);
         }
     }
 };

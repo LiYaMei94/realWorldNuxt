@@ -33,7 +33,7 @@ export default {
                             },
                             {
                                 name: 'editor',
-                                path: '/editor',
+                                path: '/editor/:slug',
                                 component: resolve(__dirname, '@/pages/article/createArticle')
                             },
                             {
@@ -43,7 +43,7 @@ export default {
                             },
                             {
                                 name: 'article',
-                                path: '/article/',
+                                path: '/article/:slug',
                                 component: resolve(__dirname, '@/pages/article/')
                             },
                             {

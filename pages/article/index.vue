@@ -31,7 +31,7 @@
                         </div>
                     </form>
 
-                    <div class="card" v-for="item in comments" :key="item.id">
+                    <div class="card" v-for="(item, index) in comments" :key="item.id">
                         <div class="card-block">
                             <p class="card-text">{{ item.body }}</p>
                         </div>
@@ -50,6 +50,9 @@
                             &nbsp;
                             <a href="" class="comment-author">{{ item.author.username }}</a>
                             <span class="date-posted">{{ item.createdAt | date('MMM DD, YYYY') }}</span>
+                            <span class="mod-options" v-if="auth && item.author.username === auth.username">
+                                <i class="ion-trash-a" @click="deleteCb(item, index)"></i>
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -60,7 +63,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { articleDetail, getComments, addComments } from '../../network/api';
+import { articleDetail, getComments, addComments, deleteComment } from '../../network/api';
 import ArticleMeta from './components/articleMeta';
 import markdownIt from 'markdown-it';
 export default {
@@ -72,8 +75,8 @@ export default {
     computed: {
         ...mapState(['auth'])
     },
-    async asyncData({ query }) {
-        const [{ article }, { comments }] = await Promise.all([articleDetail({ slug: query.slug }), getComments({ slug: query.slug })]);
+    async asyncData({ params }) {
+        const [{ article }, { comments }] = await Promise.all([articleDetail({ slug: params.slug }), getComments({ slug: params.slug })]);
         // console.log(comments);
         // console.log(article);
         const md = new markdownIt();
@@ -97,6 +100,12 @@ export default {
         },
         updateArticle(data) {
             data.type === 'favorited' ? (this.article = data.data) : (this.article.author = data.data);
+        },
+        deleteCb(item, index) {
+            deleteComment({ slug: this.article.slug, id: item.id }).then(res => {
+                console.log(res);
+                this.comments.splice(index, 1);
+            });
         }
     },
     head() {
