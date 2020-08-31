@@ -57,24 +57,10 @@ export default {
             );
         }
     },
-    //处理跨域问题
-    // modules: ["@nuxtjs/axios", "@nuxtjs/proxy"],
-    // axios: {
-    //     //开发模式下开启debug
-    //     debug: process.env._ENV == "production" ? false : true,
-    //     //设置不同环境的请求地址
-    //     baseURL:
-    //         process.env._ENV == "production"
-    //             ? "http://localhost:3000/api"
-    //             : "http://localhost:3000/api",
-    //     withCredentials: true,
-    // },
-    // proxy: {
-    //     //开启代理
-    //     "/api/": {
-    //         target: "http://realworld.api.fed.lagounews.com/",
-    //         pathRewrite: { "^/api/": "" }
-    //     }
-    // },
-    plugins: ['~/plugins/inits/element-ui.init.js', '~/plugins/request.js', '~/plugins/dayjs.js']
+    plugins: [
+        '~/plugins/inits/element-ui.init.js',
+        '~/plugins/request.js',
+        '~/plugins/dayjs.js',
+        '~/plugins/components-register'
+    ]
 };

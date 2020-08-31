@@ -73,4 +73,3 @@ export function request({ url, method, options }) {
     });
 }
 
-// export default request

@@ -24,7 +24,7 @@
                             <textarea class="form-control" v-model="myCommentStr" placeholder="Write a comment..." rows="3"></textarea>
                         </div>
                         <div class="card-footer">
-                            <img :src="article.author.image" class="comment-author-img" />
+                            <img :src="auth.image" class="comment-author-img" />
                             <button class="btn btn-sm btn-primary" @click="addCommentSubmit">
                                 Post Comment
                             </button>

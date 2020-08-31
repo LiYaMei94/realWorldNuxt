@@ -83,13 +83,9 @@
 <script>
 import { mapState } from 'vuex';
 import { getProfiles, unfollowUser, followUser, getArticlesList } from '../../network/api';
-import ArticlePreview from '../../components/articlePreview';
 export default {
     middleware: 'authenticated',
     name: 'ProfilePage',
-    components: {
-        ArticlePreview
-    },
     watchQuery: ['tab', 'page'],
     async asyncData({ params, query }) {
         let page = Number.parseInt(query.page || 1);
