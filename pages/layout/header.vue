@@ -32,7 +32,7 @@
                                     }
                                 }"
                             >
-                                <img v-show="auth.image" class="user-pic" :src="`/profile/${auth.image}`" />
+                                <img v-show="auth.image" class="user-pic" :src="auth.image" />
                                 {{ auth.username }}
                             </nuxt-link>
                         </li>

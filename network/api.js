@@ -42,7 +42,7 @@ export function getUser(options) {
  */
 export function updateUser(options) {
     return request({
-        url: '/api/users',
+        url: '/api/user',
         method: 'PUT',
         options
     });
