@@ -1,6 +1,6 @@
 export default {
     router: {
-        base: "/nuxt-realworld",
+        // base: "/nuxt-realworld",// 生成静态网页时使用
         linkActiveClass: 'active', // 将nuxt-link-active替换为active
         extendRoutes(routes, resolve) {
             // 清除默认路由
@@ -62,6 +62,7 @@ export default {
         "host": "0.0.0.0",
         "port": "8011"
     },
+    // 生成静态网页时使用
     generate: {
         dir: 'docs',
         subFolders: false

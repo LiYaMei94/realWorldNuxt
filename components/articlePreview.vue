@@ -125,13 +125,17 @@ export default {
             this.$router.push({ name: this.$route.name, query: query });
         },
         favorited($event, article, index) {
-            article.favoriteDisabled = true;
-            const submit = article.favorited ? unfavoriteArticle : favoriteArticle;
-            submit({ slug: article.slug }).then(res => {
-                // console.log(res);
-                article.favoriteDisabled = false;
-                this.$emit('favorited', { article: { ...res.article, favoriteDisabled: false }, index: index });
-            });
+            if (this.auth) {
+                article.favoriteDisabled = true;
+                const submit = article.favorited ? unfavoriteArticle : favoriteArticle;
+                submit({ slug: article.slug }).then(res => {
+                    // console.log(res);
+                    article.favoriteDisabled = false;
+                    this.$emit('favorited', { article: { ...res.article, favoriteDisabled: false }, index: index });
+                });
+            } else {
+                this.$router.push('/login');
+            }
         }
     }
 };

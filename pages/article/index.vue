@@ -12,51 +12,68 @@
             <div class="row article-content">
                 <div class="col-md-12" v-html="article.body"></div>
             </div>
-
+            <ul class="tag-list" v-if="article.tagList.length !== 0">
+                <li v-for="(item, index) in article.tagList" :key="index" class="tag-default tag-pill tag-outline">
+                    {{ item }}
+                </li>
+            </ul>
             <hr />
+            <div class="article-actions">
+                <ArticleMeta :article="article" @updateArticleDetail="updateArticle"></ArticleMeta>
+            </div>
 
-            <ArticleMeta :article="article" @updateArticleDetail="updateArticle"></ArticleMeta>
-            <hr />
-            <div class="row">
+            <div class="row" v-if="!auth">
                 <div class="col-xs-12 col-md-8 offset-md-2">
-                    <form class="card comment-form" @click.prevent="">
-                        <div class="card-block">
-                            <textarea class="form-control" v-model="myCommentStr" placeholder="Write a comment..." rows="3"></textarea>
-                        </div>
-                        <div class="card-footer">
-                            <img :src="auth.image" class="comment-author-img" />
-                            <button class="btn btn-sm btn-primary" @click="addCommentSubmit">
-                                Post Comment
-                            </button>
-                        </div>
-                    </form>
+                    <nuxt-link to="/login">Sign in</nuxt-link>
+                    or
+                    <nuxt-link to="/register">sign up</nuxt-link>
+                    to add comments on this article.
+                </div>
+            </div>
 
-                    <div class="card" v-for="(item, index) in comments" :key="item.id">
-                        <div class="card-block">
-                            <p class="card-text">{{ item.body }}</p>
-                        </div>
-                        <div class="card-footer">
-                            <nuxt-link
-                                class="comment-author"
-                                :to="{
-                                    name: 'profile',
-                                    params: {
-                                        username: item.author.username
-                                    }
-                                }"
-                            >
-                                <img class="comment-author-img" :src="item.author.image" />
-                            </nuxt-link>
-                            &nbsp;
-                            <a href="" class="comment-author">{{ item.author.username }}</a>
-                            <span class="date-posted">{{ item.createdAt | date('MMM DD, YYYY') }}</span>
-                            <span class="mod-options" v-if="auth && item.author.username === auth.username">
-                                <i class="ion-trash-a" @click="deleteCb(item, index)"></i>
-                            </span>
+            <template v-else>
+                <hr />
+                <div class="row">
+                    <div class="col-xs-12 col-md-8 offset-md-2">
+                        <form class="card comment-form" @click.prevent="">
+                            <div class="card-block">
+                                <textarea class="form-control" v-model="myCommentStr" placeholder="Write a comment..." rows="3"></textarea>
+                            </div>
+                            <div class="card-footer">
+                                <img :src="auth.image" class="comment-author-img" />
+                                <button class="btn btn-sm btn-primary" @click="addCommentSubmit">
+                                    Post Comment
+                                </button>
+                            </div>
+                        </form>
+
+                        <div class="card" v-for="(item, index) in comments" :key="item.id">
+                            <div class="card-block">
+                                <p class="card-text">{{ item.body }}</p>
+                            </div>
+                            <div class="card-footer">
+                                <nuxt-link
+                                    class="comment-author"
+                                    :to="{
+                                        name: 'profile',
+                                        params: {
+                                            username: item.author.username
+                                        }
+                                    }"
+                                >
+                                    <img class="comment-author-img" :src="item.author.image" />
+                                </nuxt-link>
+                                &nbsp;
+                                <a href="" class="comment-author">{{ item.author.username }}</a>
+                                <span class="date-posted">{{ item.createdAt | date('MMM DD, YYYY') }}</span>
+                                <span class="mod-options" v-if="auth && item.author.username === auth.username">
+                                    <i class="ion-trash-a" @click="deleteCb(item, index)"></i>
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </template>
         </div>
     </div>
 </template>
@@ -67,7 +84,6 @@ import { articleDetail, getComments, addComments, deleteComment } from '../../ne
 import ArticleMeta from './components/articleMeta';
 import markdownIt from 'markdown-it';
 export default {
-    middleware: 'authenticated',
     components: {
         ArticleMeta
     },

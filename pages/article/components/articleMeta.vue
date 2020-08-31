@@ -65,18 +65,26 @@ export default {
     },
     methods: {
         submitFollowUser() {
-            const submit = this.article.author.following ? unfollowUser : followUser;
-            submit({ username: this.article.author.username }).then(res => {
-                this.$emit('updateArticleDetail', { type: 'following', data: res.profile });
-                // console.log(res);
-            });
+            if (this.auth) {
+                const submit = this.article.author.following ? unfollowUser : followUser;
+                submit({ username: this.article.author.username }).then(res => {
+                    this.$emit('updateArticleDetail', { type: 'following', data: res.profile });
+                    // console.log(res);
+                });
+            } else {
+                this.$router.push('/login');
+            }
         },
         submitFavoriteArticle() {
-            const submit = this.article.favorited ? unfavoriteArticle : favoriteArticle;
-            submit({ slug: this.article.slug }).then(res => {
-                this.$emit('updateArticleDetail', { type: 'favorited', data: res.article });
-                // console.log(res);
-            });
+            if (this.auth) {
+                const submit = this.article.favorited ? unfavoriteArticle : favoriteArticle;
+                submit({ slug: this.article.slug }).then(res => {
+                    this.$emit('updateArticleDetail', { type: 'favorited', data: res.article });
+                    // console.log(res);
+                });
+            } else {
+                this.$router.push('/login');
+            }
         },
         deleteArticle() {
             deleteArticle({ slug: this.article.slug }).then(res => {
