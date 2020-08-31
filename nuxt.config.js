@@ -64,8 +64,9 @@ export default {
     },
     // 生成静态网页时使用
     generate: {
-        dir: 'docs',
-        subFolders: false
+        dir: 'docs',//nuxt generate 生成的目录名称
+        subFolders: false,// 运行nuxt generate将为每个路由创建一个目录并生成index.html文件
+        fallback: 'index.html'// 默认是200.html
     },
     components: true,
     plugins: [
