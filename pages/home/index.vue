@@ -101,8 +101,12 @@
 import { getTags, getArticlesList, articlesFeed, favoriteArticle, unfavoriteArticle } from '../../network/api';
 import { mapState } from 'vuex';
 import axios from 'axios';
+// import ArticlePreview from '../../components/articlePreview';
 export default {
     name: 'HomeIndex',
+    components: {
+        // ArticlePreview
+    },
     // 使用watchQuery属性可以监听参数字符串的更改。 如果定义的字符串发生变化，将调用所有组件方法(asyncData, fetch, validate, layout, ...)
     watchQuery: ['page', 'tag', 'tab', 'pageLimit'],
     async asyncData({ query }) {

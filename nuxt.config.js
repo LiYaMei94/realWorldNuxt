@@ -1,5 +1,6 @@
 export default {
     router: {
+        base: "/nuxt-realworld",
         linkActiveClass: 'active', // 将nuxt-link-active替换为active
         extendRoutes(routes, resolve) {
             // 清除默认路由
@@ -57,10 +58,18 @@ export default {
             );
         }
     },
+    server: {
+        "host": "0.0.0.0",
+        "port": "8011"
+    },
+    generate: {
+        dir: 'docs',
+        subFolders: false
+    },
+    components: true,
     plugins: [
         '~/plugins/inits/element-ui.init.js',
         '~/plugins/request.js',
-        '~/plugins/dayjs.js',
-        '~/plugins/components-register'
+        '~/plugins/dayjs.js'
     ]
 };
